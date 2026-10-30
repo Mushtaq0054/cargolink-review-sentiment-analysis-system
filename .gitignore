@@ -1,0 +1,19 @@
+# Virtual Environment
+cargo/
+venv/
+env/
+.env
+
+# Python Cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.ipynb_checkpoints/
+
+# Raw downloaded bulk datasets (can be re-downloaded via src/prepare_dataset.py)
+data/raw/
+
+# Testing & Logs
+.pytest_cache/
+*.log
+
