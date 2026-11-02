@@ -128,8 +128,7 @@ cargolink-review-sentiment-analysis-system/
 ├── src/
 │   ├── __init__.py
 │   ├── prepare_dataset.py                 # Task 1: Data collection & filtering
-│   ├── pipeline.py                        # Task 2: Text cleaning & Baseline pipeline
-│   └── generate_notebook.py               # Automated notebook generator & evaluator
+│   └── pipeline.py                        # Task 2: Text cleaning & Baseline pipeline
 ├── requirements.txt                       # Project dependencies
 ├── PROJECT_OVERVIEW.md                    # Project roadmap & guide
 └── README.md                              # Project documentation & task reports
