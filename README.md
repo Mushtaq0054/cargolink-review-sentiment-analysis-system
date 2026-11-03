@@ -178,9 +178,9 @@ The application is structured for instant deployment as a **Web Service** on [Re
 2. Select **Docker** as the Runtime environment.
 3. Render automatically executes the `Dockerfile`, starts Uvicorn, and assigns a live public HTTPS URL.
 
-* **Live API Base URL:** `https://cargolink-review-sentiment-analysis-system.onrender.com`
-* **Live Interactive Swagger Docs:** `https://cargolink-review-sentiment-analysis-system.onrender.com/docs`
-* **Live Prediction Endpoint:** `POST https://cargolink-review-sentiment-analysis-system.onrender.com/predict`
+* **Live API Base URL:** `https://cargolink-review-sentiment-analysis.onrender.com`
+* **Live Interactive Swagger Docs:** `https://cargolink-review-sentiment-analysis.onrender.com/docs`
+* **Live Prediction Endpoint:** `POST https://cargolink-review-sentiment-analysis.onrender.com/predict`
 
 ---
 
