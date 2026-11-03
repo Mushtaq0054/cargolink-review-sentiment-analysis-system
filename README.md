@@ -202,7 +202,56 @@ curl -X POST "http://localhost:8000/predict" \
 
 ---
 
-### 5. Project Directory Structure
+## 📊 Task 5: Create Streamlit Dashboard and Final Handover
+
+### 1. Interactive Streamlit Web Dashboard
+The final client deliverable is an executive analytics dashboard implemented in [`dashboard.py`](file:///c:/Users/Mushtaq%20Ahmad%20Madni/Desktop/internship%20projects/cargolink-review-sentiment-analysis-system/dashboard.py) (aliased as [`streamlit_app.py`](file:///c:/Users/Mushtaq%20Ahmad%20Madni/Desktop/internship%20projects/cargolink-review-sentiment-analysis-system/streamlit_app.py)):
+* **Sentiment Counts Bar Chart:** Visualizes distribution of positive vs negative customer reviews with percentage annotations across Test, Train, and Combined datasets.
+* **Proportion Donut Chart:** High-level executive split of customer satisfaction metrics.
+* **Live Review Sentiment Analyzer:** Connected directly to our live Render API (`https://cargolink-review-sentiment-analysis.onrender.com/predict`), allowing users to input arbitrary reviews or select quick logistics presets (Fast Delivery, Crushed Box, Complex Negations) to receive real-time sentiment classifications, confidence scores, and probability progress bars.
+* **Batch Prediction Simulator:** Randomly samples unseen test reviews and evaluates them in real-time via the API's `/predict/batch` endpoint.
+
+#### Run Streamlit Dashboard Locally:
+```bash
+cargo\Scripts\streamlit.exe run dashboard.py
+```
+
+---
+
+### 2. Comprehensive Unit Test Suite (`pytest`)
+A robust unit test suite covering text preprocessing, model inference, and API endpoints is located in [`tests/`](file:///c:/Users/Mushtaq%20Ahmad%20Madni/Desktop/internship%20projects/cargolink-review-sentiment-analysis-system/tests/):
+* **Pipeline Tests ([`tests/test_pipeline.py`](file:///c:/Users/Mushtaq%20Ahmad%20Madni/Desktop/internship%20projects/cargolink-review-sentiment-analysis-system/tests/test_pipeline.py)):** Verifies lowercase normalization, regex noise cleaning, stopwords removal, negation preservation (`not`, `no`, `never`), model artifact loading, and prediction shapes.
+* **API Tests ([`tests/test_api.py`](file:///c:/Users/Mushtaq%20Ahmad%20Madni/Desktop/internship%20projects/cargolink-review-sentiment-analysis-system/tests/test_api.py)):** Verifies root `/`, `/health`, single `/predict`, empty string validation, and `/predict/batch`.
+
+#### Run Unit Tests:
+```bash
+cargo\Scripts\pytest.exe tests/ -v
+```
+*(All 15 unit tests pass cleanly: `15 passed in 12.5s`).*
+
+---
+
+### 3. Model Card Documentation
+Complete industry-standard model specifications, training methodology, metrics breakdown, ethics, and limitations are documented in [`MODEL_CARD.md`](file:///c:/Users/Mushtaq%20Ahmad%20Madni/Desktop/internship%20projects/cargolink-review-sentiment-analysis-system/MODEL_CARD.md).
+
+---
+
+### 4. Client Handover & Verification Checklist
+| Acceptance Criteria | Verified In | Status |
+| :--- | :--- | :---: |
+| **Dataset CSV exists in repo** | `data/train.csv`, `data/test.csv` (80/20 split) | ✅ PASSED |
+| **Baseline Accuracy > 0.70** | `notebooks/01_baseline_logistic_regression.ipynb` (90.38%) | ✅ PASSED |
+| **Improved Accuracy > Baseline** | `notebooks/02_feature_engineering_and_model_tuning.ipynb` (92.39%) | ✅ PASSED |
+| **API Endpoint `/predict` returns JSON** | `app.py` live on Render (`POST /predict`) | ✅ PASSED |
+| **Dockerfile builds image** | `Dockerfile` verified and running on Render | ✅ PASSED |
+| **Render deployment URL live** | `https://cargolink-review-sentiment-analysis.onrender.com` | ✅ PASSED |
+| **Dashboard displays bar chart of sentiment** | `dashboard.py` (Sentiment Counts Bar Chart) | ✅ PASSED |
+| **Model Card file exists** | `MODEL_CARD.md` in repository root | ✅ PASSED |
+| **Unit tests pass** | `tests/` (15 passing tests via pytest) | ✅ PASSED |
+
+---
+
+### 5. Final Project Directory Structure
 ```
 cargolink-review-sentiment-analysis-system/
 ├── cargo/                                 # Dedicated virtual environment
@@ -213,8 +262,8 @@ cargolink-review-sentiment-analysis-system/
 │   ├── train.csv                          # 80% Train set (8,141 rows)
 │   └── test.csv                           # 20% Test set (2,037 rows)
 ├── models/
-│   ├── baseline_logistic_regression.joblib # Baseline model artifact
-│   └── tuned_model.joblib                 # Tuned Linear SVM best model artifact
+│   ├── baseline_logistic_regression.joblib # Baseline model artifact (90.38% acc)
+│   └── tuned_model.joblib                 # Tuned Linear SVM best model artifact (92.39% acc)
 ├── notebooks/
 │   ├── 01_baseline_logistic_regression.ipynb # Task 2 baseline notebook
 │   └── 02_feature_engineering_and_model_tuning.ipynb # Task 3 tuning & comparison notebook
@@ -223,9 +272,15 @@ cargolink-review-sentiment-analysis-system/
 │   ├── prepare_dataset.py                 # Task 1: Data collection & filtering
 │   ├── pipeline.py                        # Task 2: Baseline pipeline
 │   └── tune_model.py                      # Task 3: N-grams & Model Tuning
+├── tests/
+│   ├── test_api.py                        # Task 5: FastAPI endpoint unit tests
+│   └── test_pipeline.py                   # Task 5: NLP & model unit tests
 ├── .dockerignore                          # Docker build exclusion rules
 ├── Dockerfile                             # Container specification for Render deployment
 ├── app.py                                 # Task 4: FastAPI prediction microservice
+├── dashboard.py                           # Task 5: Streamlit interactive executive dashboard
+├── streamlit_app.py                       # Streamlit entrypoint alias
+├── MODEL_CARD.md                          # Task 5: Comprehensive model card documentation
 ├── requirements.txt                       # Project dependencies
 ├── PROJECT_OVERVIEW.md                    # Project roadmap & guide
 └── README.md                              # Comprehensive project documentation

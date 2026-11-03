@@ -89,7 +89,7 @@ class ReviewRequest(BaseModel):
         ...,
         min_length=3,
         description="The raw customer review text to be analyzed for sentiment.",
-        example="Package arrived within 24 hours in flawless condition. Super fast delivery!"
+        json_schema_extra={"example": "Package arrived within 24 hours in flawless condition. Super fast delivery!"}
     )
 
 
@@ -106,12 +106,14 @@ class PredictionResponse(BaseModel):
 class BatchReviewRequest(BaseModel):
     reviews: List[str] = Field(
         ...,
-        min_items=1,
+        min_length=1,
         description="List of raw customer review strings.",
-        example=[
-            "Super fast shipping and safe delivery!",
-            "Delayed shipment by 5 days, box crushed and courier was rude."
-        ]
+        json_schema_extra={
+            "example": [
+                "Super fast shipping and safe delivery!",
+                "Delayed shipment by 5 days, box crushed and courier was rude."
+            ]
+        }
     )
 
 
