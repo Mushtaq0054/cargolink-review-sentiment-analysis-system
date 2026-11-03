@@ -115,21 +115,94 @@ We evaluated four model configurations on the 2,037 test samples:
 
 ---
 
-### 5. How to Run & Reproduce
+## 🌐 Task 4: Expose Model via FastAPI and Deploy to Render
 
-#### Run Baseline Pipeline:
-```bash
-python src/pipeline.py
+### 1. FastAPI Microservice Architecture
+The tuned sentiment classification pipeline was encapsulated into a high-performance production microservice via [`app.py`](file:///c:/Users/Mushtaq%20Ahmad%20Madni/Desktop/internship%20projects/cargolink-review-sentiment-analysis-system/app.py):
+* **Model Loading:** Loads `models/tuned_model.joblib` (Tuned Linear SVM, 92.39% accuracy) into memory during application lifespan.
+* **Schema Validation:** Strict Pydantic models for incoming JSON payloads and structured responses.
+* **CORS Support:** Configured for cross-origin integration with our upcoming Streamlit dashboard.
+
+#### API Endpoints:
+| Method | Endpoint | Description |
+| :--- | :--- | :--- |
+| `GET` | `/` | Service health status, metadata, and model version. |
+| `GET` | `/health` | Uptime check endpoint for cloud orchestrators. |
+| `GET` | `/docs` | Interactive Swagger UI API documentation and tester. |
+| `POST` | `/predict` | **Primary Endpoint:** Accepts a review string, returns sentiment, confidence score, and probabilities. |
+| `POST` | `/predict/batch` | Accepts a list of review strings, returns array of predictions and aggregate positive/negative counts. |
+
+#### Sample Request (`POST /predict`):
+```json
+{
+  "review_text": "Package arrived within 24 hours in flawless packaging. Super fast delivery!"
+}
 ```
 
-#### Run Model Tuning & Experiments:
-```bash
-python src/tune_model.py
+#### Sample Response:
+```json
+{
+  "review_text": "Package arrived within 24 hours in flawless packaging. Super fast delivery!",
+  "sentiment": "Positive",
+  "label": 1,
+  "confidence": 0.9916,
+  "probability_positive": 0.9916,
+  "probability_negative": 0.0084,
+  "model_version": "Tuned Linear SVM (Bigrams, C=0.5)"
+}
 ```
 
 ---
 
-### 6. Project Directory Structure
+### 2. Containerization via Docker
+A multi-stage, secure container specification is provided in [`Dockerfile`](file:///c:/Users/Mushtaq%20Ahmad%20Madni/Desktop/internship%20projects/cargolink-review-sentiment-analysis-system/Dockerfile):
+* **Base Image:** `python:3.10-slim`
+* **Layer Caching:** Copies `requirements.txt` and installs dependencies prior to source copy.
+* **Offline NLP Reliability:** Pre-downloads NLTK resources (`stopwords`, `punkt`, `punkt_tab`) inside the container image so zero external downloads are required at runtime.
+* **Dynamic Port Binding:** Binds Uvicorn to `${PORT:-8000}` for compatibility across local environments and cloud providers (Render).
+
+#### Build & Run Container Locally:
+```bash
+# Build Docker image
+docker build -t cargolink-sentiment-api .
+
+# Run Docker container
+docker run -p 8000:8000 cargolink-sentiment-api
+```
+
+---
+
+### 3. Cloud Deployment on Render
+The application is structured for instant deployment as a **Web Service** on [Render](https://render.com):
+1. Connect GitHub repository `https://github.com/Mushtaq0054/cargolink-review-sentiment-analysis-system`.
+2. Select **Docker** as the Runtime environment.
+3. Render automatically executes the `Dockerfile`, starts Uvicorn, and assigns a live public HTTPS URL.
+
+* **Live API Base URL:** `https://cargolink-review-sentiment-analysis-system.onrender.com`
+* **Live Interactive Swagger Docs:** `https://cargolink-review-sentiment-analysis-system.onrender.com/docs`
+* **Live Prediction Endpoint:** `POST https://cargolink-review-sentiment-analysis-system.onrender.com/predict`
+
+---
+
+### 4. How to Run Locally
+
+#### 1. Start FastAPI Development Server:
+```bash
+# Using virtual environment
+cargo\Scripts\python.exe -m uvicorn app:app --reload --port 8000
+```
+Open [http://localhost:8000/docs](http://localhost:8000/docs) in your browser to interact with the API Swagger UI.
+
+#### 2. Test via cURL:
+```bash
+curl -X POST "http://localhost:8000/predict" \
+     -H "Content-Type: application/json" \
+     -d "{\"review_text\": \"Delayed shipment by 5 days, box was completely crushed.\"}"
+```
+
+---
+
+### 5. Project Directory Structure
 ```
 cargolink-review-sentiment-analysis-system/
 ├── cargo/                                 # Dedicated virtual environment
@@ -150,6 +223,9 @@ cargolink-review-sentiment-analysis-system/
 │   ├── prepare_dataset.py                 # Task 1: Data collection & filtering
 │   ├── pipeline.py                        # Task 2: Baseline pipeline
 │   └── tune_model.py                      # Task 3: N-grams & Model Tuning
+├── .dockerignore                          # Docker build exclusion rules
+├── Dockerfile                             # Container specification for Render deployment
+├── app.py                                 # Task 4: FastAPI prediction microservice
 ├── requirements.txt                       # Project dependencies
 ├── PROJECT_OVERVIEW.md                    # Project roadmap & guide
 └── README.md                              # Comprehensive project documentation
