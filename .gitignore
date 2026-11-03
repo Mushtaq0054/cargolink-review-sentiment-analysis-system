@@ -17,3 +17,7 @@ data/raw/
 .pytest_cache/
 *.log
 
+# Personal Study & Interview Notes (Kept local, excluded from GitHub)
+docs/
+
+

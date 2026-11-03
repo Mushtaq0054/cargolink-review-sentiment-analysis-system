@@ -112,7 +112,6 @@ We evaluated four model configurations on the 2,037 test samples:
 * **Tuning & Evaluation Script:** [`src/tune_model.py`](file:///c:/Users/Mushtaq%20Ahmad%20Madni/Desktop/internship%20projects/cargolink-review-sentiment-analysis-system/src/tune_model.py)
 * **Pre-executed Notebook:** [`notebooks/02_feature_engineering_and_model_tuning.ipynb`](file:///c:/Users/Mushtaq%20Ahmad%20Madni/Desktop/internship%20projects/cargolink-review-sentiment-analysis-system/notebooks/02_feature_engineering_and_model_tuning.ipynb)
 * **Best Tuned Model:** [`models/tuned_model.joblib`](file:///c:/Users/Mushtaq%20Ahmad%20Madni/Desktop/internship%20projects/cargolink-review-sentiment-analysis-system/models/tuned_model.joblib)
-* **Comprehensive Study Guide:** [`docs/TASK_3_EXPLANATION.md`](file:///c:/Users/Mushtaq%20Ahmad%20Madni/Desktop/internship%20projects/cargolink-review-sentiment-analysis-system/docs/TASK_3_EXPLANATION.md)
 
 ---
 
@@ -140,10 +139,6 @@ cargolink-review-sentiment-analysis-system/
 │   ├── cargolink_reviews_cleaned.csv      # Filtered logistics dataset (10,178 rows)
 │   ├── train.csv                          # 80% Train set (8,141 rows)
 │   └── test.csv                           # 20% Test set (2,037 rows)
-├── docs/
-│   ├── TASK_1_EXPLANATION.md              # Task 1 guide, Interview Q&As & MCQs
-│   ├── TASK_2_EXPLANATION.md              # Task 2 guide, Interview Q&As & MCQs
-│   └── TASK_3_EXPLANATION.md              # Task 3 guide, Interview Q&As & MCQs
 ├── models/
 │   ├── baseline_logistic_regression.joblib # Baseline model artifact
 │   └── tuned_model.joblib                 # Tuned Linear SVM best model artifact
